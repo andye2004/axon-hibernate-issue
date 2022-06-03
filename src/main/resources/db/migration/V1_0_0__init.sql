@@ -1,0 +1,14 @@
+create sequence foodcart.hibernate_sequence start 1 increment 1;
+create table foodcart.association_value_entry (id int8 not null, association_key varchar(255) not null, association_value varchar(255), saga_id varchar(255) not null, saga_type varchar(255), primary key (id));
+create table foodcart.domain_event_entry (global_index int8 not null, event_identifier varchar(255) not null, meta_data oid, payload oid not null, payload_revision varchar(255), payload_type varchar(255) not null, time_stamp varchar(255) not null, aggregate_identifier varchar(255) not null, sequence_number int8 not null, type varchar(255), primary key (global_index));
+create table foodcart.food_cart_view (food_cart_id uuid not null, primary key (food_cart_id));
+create table foodcart.food_cart_view_products (food_cart_view_food_cart_id uuid not null, products int4, products_key uuid not null, primary key (food_cart_view_food_cart_id, products_key));
+create table foodcart.saga_entry (saga_id varchar(255) not null, revision varchar(255), saga_type varchar(255), serialized_saga oid, primary key (saga_id));
+create table foodcart.snapshot_event_entry (aggregate_identifier varchar(255) not null, sequence_number int8 not null, type varchar(255) not null, event_identifier varchar(255) not null, meta_data oid, payload oid not null, payload_revision varchar(255), payload_type varchar(255) not null, time_stamp varchar(255) not null, primary key (aggregate_identifier, sequence_number, type));
+create table foodcart.token_entry (processor_name varchar(255) not null, segment int4 not null, owner varchar(255), timestamp varchar(255) not null, token oid, token_type varchar(255), primary key (processor_name, segment));
+create index IDXk45eqnxkgd8hpdn6xixn8sgft on foodcart.association_value_entry (saga_type, association_key, association_value);
+create index IDXgv5k1v2mh6frxuy5c0hgbau94 on foodcart.association_value_entry (saga_id, saga_type);
+alter table foodcart.domain_event_entry add constraint UK8s1f994p4la2ipb13me2xqm1w unique (aggregate_identifier, sequence_number);
+alter table foodcart.domain_event_entry add constraint UK_fwe6lsa8bfo6hyas6ud3m8c7x unique (event_identifier);
+alter table foodcart.snapshot_event_entry add constraint UK_e1uucjseo68gopmnd0vgdl44h unique (event_identifier);
+alter table foodcart.food_cart_view_products add constraint FK4qxqmp4g2iqtslkywf9n0qda0 foreign key (food_cart_view_food_cart_id) references foodcart.food_cart_view;

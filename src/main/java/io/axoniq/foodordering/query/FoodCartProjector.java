@@ -13,6 +13,8 @@ import java.util.Collections;
 @Component
 class FoodCartProjector {
 
+    private static int index = 0;
+
     private final FoodCartViewRepository foodCartViewRepository;
 
     public FoodCartProjector(FoodCartViewRepository foodCartViewRepository) {
@@ -27,6 +29,11 @@ class FoodCartProjector {
 
     @EventHandler
     public void on(ProductSelectedEvent event) {
+        index++;
+
+//        if (index > 7) {
+//            throw new IllegalArgumentException("");
+//        }
         foodCartViewRepository.findById(event.getFoodCartId()).ifPresent(
                 foodCartView -> foodCartView.addProducts(event.getProductId(), event.getQuantity())
         );

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-@RequestMapping("/foodCart")
+@RequestMapping("/foodcart")
 @RestController
 class FoodOrderingController {
 
